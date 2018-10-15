@@ -66,6 +66,8 @@ class GPSLocationPacket extends BaseRequest{
         $this->dateTime = new DateTime();
         $this->dateTime.setDate($this->informationContent[0] + 2000, $this->informationContent[1], $this->informationContent[2]);
         $this->dateTime.setTime($this->informationContent[3], $this->informationContent[4], $this->informationContent[5]);
+
+        echo $this->dateTime;
     }
 
     public function InitContent()

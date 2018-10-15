@@ -31,6 +31,7 @@ class ClientInformation{
            if($requestType == 1){
                 echo 'Client is connected<br/>';
                 $this->isConnected = true;
+                $this->clientInfo = new LoginInfo($requestContent);
            }
            
         }
@@ -38,18 +39,27 @@ class ClientInformation{
         socket_write($this->clientSocket, implode("",$response),10);
         
         $this->isRunning = false;
-        // while($this->isConnected){
-        //     $requestContent =  $this->ConvertStreamToArray(socket_read($this->clientSocket, BUFFER_SIZE));
-        //     $this->InitRequest($requestContent);
-        // }
-
+        $dateTime = new DateTime();
+        while($this->isConnected){
+            $requestContent =  $this->ConvertStreamToArray(socket_read($this->clientSocket, BUFFER_SIZE));
+            $this->InitRequest($requestContent);
+            $this->currentRequest.DoProcessRequest();
+        }
+        
         # code...
     }
 
     private function InitRequest($requestContent)
     {
 
-        # code...
+        switch ($requestContent[3]){
+            case 0x22: 
+                $this->currentRequest = new GPSLocationPacket($this->clientInfo, $requestContent);
+                break;
+            default:
+                break;
+        }
+
     }
 
     private function ConvertStreamToArray($content){
