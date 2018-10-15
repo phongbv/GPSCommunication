@@ -60,6 +60,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="php\Index.php" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ReadingRequest\ReadingRequest.csproj">

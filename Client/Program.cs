@@ -12,7 +12,7 @@ namespace Client
     class Program
     {
         private const int BUFFER_SIZE = 1024;
-        private const int PORT_NUMBER = 24292;
+        private const int PORT_NUMBER = 3000;
         private const string SERVER_ADDRESS = "127.0.0.1";
         //private const string SERVER_ADDRESS = "112.78.11.14";
         private static readonly byte[] LOGIN_RESPONSE = new byte[] { 0x78, 0x78, 0x05, 0x01, 0x00, 0x05, 0x9F, 0xF8, 0x0D, 0x0A };
@@ -22,7 +22,16 @@ namespace Client
         static void Main(string[] args)
         {
             TcpClient client = new TcpClient();
-            client.Connect(SERVER_ADDRESS, PORT_NUMBER);
+            try
+            {
+                client.Connect(SERVER_ADDRESS, PORT_NUMBER);
+            }
+            catch (Exception)
+            {
+
+                return;
+            }
+           
             bool isConnected = false;
 
             var stream = client.GetStream();
@@ -49,22 +58,30 @@ namespace Client
                 }
                 Thread.Sleep(1000);
             }
-            Task.Factory.StartNew(() => DoSendHeartBeat(stream));
-            Task.Factory.StartNew(() => DoSendLocation(stream));
-            //Task.Run(() => DoSendLocation(stream));
 
             while (isRunning)
             {
-
+                DoSendLocation(stream);
             }
         }
 
         private static void DoSendLocation(NetworkStream stream)
         {
-            Console.WriteLine("Send location information");
-            var heartBeatRequest = File.ReadAllBytes("Data/GPSPositionData.dat");
-            stream.Write(heartBeatRequest, 0, heartBeatRequest.Length);
-            //Thread.Sleep(5000);
+            try
+            {
+                Console.WriteLine("Send location information");
+                var heartBeatRequest = File.ReadAllBytes("Data/GPSPositionData.dat");
+                stream.Write(heartBeatRequest, 0, heartBeatRequest.Length);
+
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            {
+                Thread.Sleep(5000);
+            }
         }
 
         static void DoSendHeartBeat(Stream stream)

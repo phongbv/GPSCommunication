@@ -9,3 +9,5 @@
 /ReadingRequest/obj
 /Server/obj
 /Server/bin/Debug
+/.vs
+/Client/obj/Release
