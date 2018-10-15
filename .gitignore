@@ -3,3 +3,9 @@
 ################################################################################
 
 /.vs/GPSCommunication/v14
+/Client/bin/Debug
+/Client/obj/Debug
+/ReadingRequest/bin/Release
+/ReadingRequest/obj
+/Server/obj
+/Server/bin/Debug

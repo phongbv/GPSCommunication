@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="QBit.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="qbit_detail">
+          <Key>
+            <PropertyRef Name="detail_id" />
+          </Key>
+          <Property Name="detail_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="detail_imei" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="detail_lat" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="detail_lng" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="detail_speed" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="detail_time" Type="datetime" Nullable="false" />
+          <Property Name="detail_last" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="qbit_info">
+          <Key>
+            <PropertyRef Name="info_id" />
+          </Key>
+          <Property Name="info_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="info_imei" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="info_metadata" Type="text" />
+          <Property Name="info_timecreate" Type="int" Nullable="false" />
+          <Property Name="info_last_online" Type="datetime" />
+        </EntityType>
+        <EntityContainer Name="QBitStoreContainer">
+          <EntitySet Name="qbit_detail" EntityType="Self.qbit_detail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="qbit_info" EntityType="Self.qbit_info" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="QBit" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="qbit_detail">
+          <Key>
+            <PropertyRef Name="detail_id" />
+          </Key>
+          <Property Name="detail_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="detail_imei" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="detail_lat" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="detail_lng" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="detail_speed" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="detail_time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="detail_last" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityContainer Name="DataContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="qbit_detail" EntityType="Self.qbit_detail" />
+          <EntitySet Name="qbit_info" EntityType="QBit.qbit_info" />
+        </EntityContainer>
+        <EntityType Name="qbit_info">
+          <Key>
+            <PropertyRef Name="info_id" />
+          </Key>
+          <Property Name="info_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="info_imei" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="info_metadata" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="info_timecreate" Type="Int32" Nullable="false" />
+          <Property Name="info_last_online" Type="DateTime" Precision="3" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="QBitStoreContainer" CdmEntityContainer="DataContext">
+          <EntitySetMapping Name="qbit_detail">
+            <EntityTypeMapping TypeName="QBit.qbit_detail">
+              <MappingFragment StoreEntitySet="qbit_detail">
+                <ScalarProperty Name="detail_id" ColumnName="detail_id" />
+                <ScalarProperty Name="detail_imei" ColumnName="detail_imei" />
+                <ScalarProperty Name="detail_lat" ColumnName="detail_lat" />
+                <ScalarProperty Name="detail_lng" ColumnName="detail_lng" />
+                <ScalarProperty Name="detail_speed" ColumnName="detail_speed" />
+                <ScalarProperty Name="detail_time" ColumnName="detail_time" />
+                <ScalarProperty Name="detail_last" ColumnName="detail_last" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="qbit_info">
+            <EntityTypeMapping TypeName="QBit.qbit_info">
+              <MappingFragment StoreEntitySet="qbit_info">
+                <ScalarProperty Name="info_last_online" ColumnName="info_last_online" />
+                <ScalarProperty Name="info_timecreate" ColumnName="info_timecreate" />
+                <ScalarProperty Name="info_metadata" ColumnName="info_metadata" />
+                <ScalarProperty Name="info_imei" ColumnName="info_imei" />
+                <ScalarProperty Name="info_id" ColumnName="info_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
