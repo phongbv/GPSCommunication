@@ -17,6 +17,7 @@ namespace ConsoleApplication1
     public class Y2Server
     {
 
+
         private const int BUFFER_SIZE = 128;
         private const int PORT_NUMBER = 24292;
         //private const string SERVER_ADDRESS = "127.0.0.1";
