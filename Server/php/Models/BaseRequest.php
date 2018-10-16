@@ -26,7 +26,12 @@ class BaseRequest{
 
     public function DoProcessRequest()
     {
-        
+        if($this->logonInfo != null){
+            echo 'Update last online<br/>';
+            $date  =new DateTime();
+            echo 'UPDATE QBIT_INFO SET info_last_online=\''. $date->format('Y-m-d H:i:s') . '\' where IMEI = \'' . $this->logonInfo->deviceId .'\'';
+            echo '<br/>';
+        }
     }
 
     function ElementBetween($input, $from, $to){
