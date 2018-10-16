@@ -44,8 +44,8 @@ class ClientInformation{
             $requestContent =  $this->ConvertStreamToArray(socket_read($this->clientSocket, 128, PHP_BINARY_READ));
             $this->InitRequest($requestContent);
             if($this->currentRequest != null){
-                echo 'Processing';
                 $this->currentRequest->DoProcessRequest();
+                $this->isConnected = false;
             }
                 
         }

@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 define('_DB_SERVER', 'WIN-T2JRC8V71J9\SQL2008');
 define('_DB_USER', 'sa');
@@ -162,5 +162,3 @@ if(insertSqlserver('qbit_detail', $colum, $data)){
     echo 'Insert Ok';
 }
 */
-
-

@@ -42,20 +42,13 @@ if (socket_listen($sock, 5) === false) {
 $clientConnection = null;
 //clients array
 $clients = array();
-//echo "Welcome To Socket".PHP_EOL;
-//echo "Socket listening on ". _IP .":". _PORT ."".PHP_EOL;
+
+
 do {
     $read = array();
     $read[] = $sock;
 
     $read = array_merge($read,$clients);
-
-    // Set up a blocking call to socket_select
-    if(socket_select($read,$write = NULL, $except = NULL, $tv_sec = 5) < 1)
-    {
-        //    SocketServer::debug("Problem blocking socket_select?");
-        continue;
-    }
 
     // Handle new Connections
     $client = socket_accept($sock);

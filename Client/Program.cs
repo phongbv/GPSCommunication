@@ -21,47 +21,50 @@ namespace Client
         private static bool isRunning = true;
         static void Main(string[] args)
         {
-            TcpClient client = new TcpClient();
-            try
-            {
-                client.Connect(SERVER_ADDRESS, PORT_NUMBER);
-            }
-            catch (Exception)
-            {
-
-                return;
-            }
-           
-            bool isConnected = false;
-
-            var stream = client.GetStream();
-            var loginRequest = File.ReadAllBytes("Data/LoginInformation.dat");
-            while (!isConnected)
-            {
-                Console.WriteLine("Sending login packet...");
-                // Sending login request
-                stream.Write(loginRequest, 0, loginRequest.Length);
-
-                var data = new byte[BUFFER_SIZE];
-                stream.Read(data, 0, 1);
-
-                //if (data == LOGIN_RESPONSE)
-                //{
-                Console.WriteLine("Client is connected to the server");
-                isConnected = true;
-                break;
-                //}
-                if (TRY_COUNT > MAX_TRY)
-                {
-                    Console.WriteLine("Cannot login the server");
-                    return;
-                }
-                Thread.Sleep(1000);
-            }
-
             while (isRunning)
             {
+                TcpClient client = new TcpClient();
+                try
+                {
+                    client.Connect(SERVER_ADDRESS, PORT_NUMBER);
+                }
+                catch (Exception)
+                {
+
+                    Thread.Sleep(10000);
+                    continue;
+                }
+
+                bool isConnected = false;
+
+                var stream = client.GetStream();
+                var loginRequest = File.ReadAllBytes("Data/LoginInformation.dat");
+                while (!isConnected)
+                {
+                    Console.WriteLine("Sending login packet...");
+                    // Sending login request
+                    stream.Write(loginRequest, 0, loginRequest.Length);
+
+                    var data = new byte[BUFFER_SIZE];
+                    stream.Read(data, 0, 1);
+
+                    //if (data == LOGIN_RESPONSE)
+                    //{
+                    Console.WriteLine("Client is connected to the server");
+                    isConnected = true;
+                    break;
+                    //}
+                    if (TRY_COUNT > MAX_TRY)
+                    {
+                        Console.WriteLine("Cannot login the server");
+                        return;
+                    }
+                    Thread.Sleep(1000);
+                }
+
+
                 DoSendLocation(stream);
+                client.Close();
             }
         }
 
@@ -80,7 +83,7 @@ namespace Client
             }
             finally
             {
-                Thread.Sleep(5000);
+                Thread.Sleep(10000);
             }
         }
 
