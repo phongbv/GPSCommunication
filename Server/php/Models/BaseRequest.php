@@ -27,10 +27,8 @@ class BaseRequest{
     public function DoProcessRequest()
     {
         if($this->logonInfo != null){
-            echo 'Update last online<br/>';
-            $date  =new DateTime();
-            echo 'UPDATE QBIT_INFO SET info_last_online=\''. $date->format('Y-m-d H:i:s') . '\' where IMEI = \'' . $this->logonInfo->deviceId .'\'';
-            echo '<br/>';
+            echo 'Update last online'.PHP_EOL;
+            file_get_contents('http://114.78.11.14/api/?act=update&imei='.$this->logonInfo->deviceId);
         }
     }
 
@@ -46,7 +44,7 @@ class BaseRequest{
     {
         $result = '';
         
-         for($i=0;$i<count($byte_array);$i++)
+        for($i=0;$i<count($byte_array);$i++)
         {
             $result= $result.''.dechex($byte_array[$i]);
         }

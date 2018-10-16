@@ -36,33 +36,12 @@ class GPSLocationPacket extends BaseRequest{
     public function DoProcessRequest()
     {
         parent::DoProcessRequest();
-        echo $this->GetInsertScript();
+        file_get_contents('http://114.78.11.14/api/?act=add&imei='.$this->logonInfo->deviceId.'&lat='.$this->latitus.'&lng='.$this->longtitus.'&speed='.$this->speed);
     }
 
     public function ToString()
     {
         return "IMEI " .$this->logonInfo->deviceId.' has speed '.$this->speed.'<br/>';
     }
-
-    public function GetInsertScript()
-    {
-       return ' INSERT INTO [qbit].[dbo].[qbit_detail]
-           ([detail_imei]
-           ,[detail_lat]
-           ,[detail_lng]
-           ,[detail_speed]
-           ,[detail_time]
-           ,[detail_last])
-     VALUES
-           (\''. $this->logonInfo->deviceId .'\'
-           ,'. $this->latitus .'
-           ,'. $this->longtitus .'
-           ,'. $this->speed .'
-           ,\''. $this->dateTime->format('Y-m-d H:i:s'). '\'
-           ,\''. $this->dateTime->format('Y-m-d H:i:s'). '\')';
-
-
-    }
-
 }
 ?>

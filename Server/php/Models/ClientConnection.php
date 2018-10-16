@@ -55,11 +55,11 @@ class ClientInformation{
 
     private function InitRequest($requestContent)
     {
-       // echo 'Request Type: ' . $requestContent[3];
+        //echo 'Request Type: ' . $requestContent[3];
         $this->currentRequest = null;
         switch ($requestContent[3]){
             case 0x22: 
-                //echo 'GPS request';
+                echo 'GPS request';
                 $this->currentRequest = new GPSLocationPacket($this->clientInfo, $requestContent);
                 break;
             default:
