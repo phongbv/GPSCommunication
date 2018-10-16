@@ -22,8 +22,8 @@ class GPSLocationPacket extends BaseRequest{
 
         $this->speed = $this->informationContent[15];
         
-       $this->latitus = hexdec ( $this->ToHexString($this->ElementBetween($this->informationContent, 7, 10)));
-       $this->longtitus = hexdec ( $this->ToHexString($this->ElementBetween($this->informationContent, 11, 14)));
+       $this->latitus = hexdec ( $this->ToHexString($this->ElementBetween($this->informationContent, 7, 10))) / 1800000;
+       $this->longtitus = hexdec ( $this->ToHexString($this->ElementBetween($this->informationContent, 11, 14)))/ 1800000;
 
     }
 
