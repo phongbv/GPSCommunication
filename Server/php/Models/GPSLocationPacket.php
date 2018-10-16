@@ -35,6 +35,7 @@ class GPSLocationPacket extends BaseRequest{
 
     public function DoProcessRequest()
     {
+        echo 'Insert New Row ...'.PHP_EOL;
         parent::DoProcessRequest();
         file_get_contents('http://114.78.11.14/api/?act=add&imei='.$this->logonInfo->deviceId.'&lat='.$this->latitus.'&lng='.$this->longtitus.'&speed='.$this->speed);
     }
