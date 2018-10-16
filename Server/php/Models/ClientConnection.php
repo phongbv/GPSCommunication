@@ -41,9 +41,13 @@ class ClientInformation{
         $this->isRunning = false;
         $dateTime = new DateTime();
         while($this->isConnected){
-            $requestContent =  $this->ConvertStreamToArray(socket_read($this->clientSocket, BUFFER_SIZE));
+            $requestContent =  $this->ConvertStreamToArray(socket_read($this->clientSocket, 128, PHP_BINARY_READ));
             $this->InitRequest($requestContent);
-            $this->currentRequest.DoProcessRequest();
+            if($this->currentRequest != null){
+                echo 'Processing';
+                $this->currentRequest->DoProcessRequest();
+            }
+                
         }
         
         # code...
@@ -51,9 +55,11 @@ class ClientInformation{
 
     private function InitRequest($requestContent)
     {
-
+       // echo 'Request Type: ' . $requestContent[3];
+        $this->currentRequest = null;
         switch ($requestContent[3]){
             case 0x22: 
+                //echo 'GPS request';
                 $this->currentRequest = new GPSLocationPacket($this->clientInfo, $requestContent);
                 break;
             default:
