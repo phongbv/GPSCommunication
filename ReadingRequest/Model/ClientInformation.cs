@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -34,6 +35,7 @@ namespace ReadingRequest.Model
                 // Waiting login request
                 while (!IsConnected)
                 {
+                    data = new byte[BUFFER_SIZE];
                     clientSocket.Receive(data);
                     if (data[3] == 0x01)
                     {
@@ -46,7 +48,6 @@ namespace ReadingRequest.Model
                 // Starting reading position
                 while (true)
                 {
-
                     data = new byte[BUFFER_SIZE];
                     clientSocket.Receive(data);
                     var response = ProcessRequest(data);
@@ -78,6 +79,11 @@ namespace ReadingRequest.Model
             CurrentRequest = null;
             var requestType = (RequestType)requestData[3];
             // Console.WriteLine("Request Type: " + requestType.ToString());
+            if (IsConnected)
+            {
+                WriteRequest(requestType.ToString(), requestData);
+            }
+
             switch (requestType)
             {
                 case RequestType.LoginInformation:
@@ -101,6 +107,30 @@ namespace ReadingRequest.Model
         public void DoLogin(byte[] requestData)
         {
             _loginInfo = new LoginPacket(requestData);
+        }
+
+
+
+        private Task WriteRequest(string requestType, byte[] requestData)
+        {
+            string parentDirectory = "Dump/" + _loginInfo.TerminalId + "/" + requestType;
+            if (!Directory.Exists(parentDirectory))
+            {
+                Directory.CreateDirectory(parentDirectory);
+            }
+
+            string filePath = parentDirectory + "/" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".dat";
+            return WriteAsync(filePath, requestData);
+        }
+
+        private async Task WriteAsync(string filePath, byte[] fileContent)
+        {
+            using (FileStream sourceStream = new FileStream(filePath,
+                FileMode.Append, FileAccess.Write, FileShare.None,
+                bufferSize: 1024, useAsync: true))
+            {
+                await sourceStream.WriteAsync(fileContent, 0, fileContent.Length);
+            };
         }
 
     }

@@ -5,9 +5,9 @@
 /.vs/GPSCommunication/v14
 /Client/bin/Debug
 /Client/obj/Debug
-/ReadingRequest/bin/Release
+/ReadingRequest/bin/
 /ReadingRequest/obj
 /Server/obj
-/Server/bin/Debug
+/Server/bin/
 /.vs
-/Client/obj/Release
+/Client/obj/
