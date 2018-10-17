@@ -20,12 +20,18 @@ namespace ConsoleApplication1
 
         private const int BUFFER_SIZE = 128;
         private const int PORT_NUMBER = 24292;
-        //private const string SERVER_ADDRESS = "127.0.0.1";
-        private const string SERVER_ADDRESS = "112.78.11.14";
+        private const string SERVER_ADDRESS = "127.0.0.1";
+        //private const string SERVER_ADDRESS = "112.78.11.14";
 
         static ASCIIEncoding encoding = new ASCIIEncoding();
         private static Dictionary<RequestType, int> requestFile = new Dictionary<RequestType, int>();
         public static void Main()
+        {
+            new Y2Server().StartServer();
+            Console.Read();
+        }
+
+        public void StartServer()
         {
             try
             {
@@ -34,21 +40,21 @@ namespace ConsoleApplication1
                 TcpListener listener = new TcpListener(address, PORT_NUMBER);
 
                 listener.Start();
-
                 Console.WriteLine("Server started on " + listener.LocalEndpoint);
-                Console.WriteLine("Waiting for a connection...");
+                while (true)
+                {
+                    Console.WriteLine("Waiting for a connection...");
 
-                Socket socket = listener.AcceptSocket();
-                Console.WriteLine("Connection received from " + socket.RemoteEndPoint);
-                ClientInformation clientInfo = new ClientInformation(socket);
-                clientInfo.ProcessingRequest();
+                    Socket socket = listener.AcceptSocket();
+                    Console.WriteLine("Connection received from " + socket.RemoteEndPoint);
+                    ClientInformation clientInfo = new ClientInformation(socket);
+                }
 
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Error: " + ex);
             }
-            Console.Read();
         }
     }
 }

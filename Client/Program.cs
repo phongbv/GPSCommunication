@@ -12,7 +12,7 @@ namespace Client
     class Program
     {
         private const int BUFFER_SIZE = 1024;
-        private const int PORT_NUMBER = 3000;
+        private const int PORT_NUMBER = 24292;
         private const string SERVER_ADDRESS = "127.0.0.1";
         //private const string SERVER_ADDRESS = "112.78.11.14";
         private static readonly byte[] LOGIN_RESPONSE = new byte[] { 0x78, 0x78, 0x05, 0x01, 0x00, 0x05, 0x9F, 0xF8, 0x0D, 0x0A };

@@ -3,19 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ReadingRequest.Model
 {
     public class ClientInformation
     {
-        private const int BUFFER_SIZE = 128;
+        private const int BUFFER_SIZE = 64;
         private Socket clientSocket;
         public bool IsConnected => _loginInfo != null;
         private LoginPacket _loginInfo;
+        private Thread thread;
         public ClientInformation(Socket socket)
         {
             clientSocket = socket;
+            thread = new Thread(ProcessingRequest);
+            thread.Start();
         }
 
 
@@ -24,29 +28,41 @@ namespace ReadingRequest.Model
 
         public void ProcessingRequest()
         {
-            byte[] data = new byte[BUFFER_SIZE];
-            // Waiting login request
-            while (!IsConnected)
+            try
             {
-                clientSocket.Receive(data);
-                if (data[3] == 0x01)
+                byte[] data = new byte[BUFFER_SIZE];
+                // Waiting login request
+                while (!IsConnected)
                 {
-                    DoLogin(data);
-                    clientSocket.Send(_loginInfo.Response);
-                    Console.WriteLine("Logon device: " + _loginInfo.TerminalId);
+                    clientSocket.Receive(data);
+                    if (data[3] == 0x01)
+                    {
+                        DoLogin(data);
+                        clientSocket.Send(_loginInfo.Response);
+                        Console.WriteLine("Logon device: " + _loginInfo.TerminalId);
+                    }
+                }
+                // Console.WriteLine("Getting request from: " + _loginInfo.TerminalId);
+                // Starting reading position
+                while (true)
+                {
+
+                    data = new byte[BUFFER_SIZE];
+                    clientSocket.Receive(data);
+                    var response = ProcessRequest(data);
+                    if (response != null)
+                    {
+                        clientSocket.Send(data);
+                    }
+
+
                 }
             }
-            Console.WriteLine("Getting request from: " + _loginInfo.TerminalId);
-            // Starting reading position
-            while (true)
+            catch (SocketException)
             {
-                data = new byte[BUFFER_SIZE];
-                clientSocket.Receive(data);
-                var response = ProcessRequest(data);
-                if (response != null)
-                {
-                    clientSocket.Send(data);
-                }
+                thread.Abort();
+                clientSocket.Close();
+                Console.WriteLine($"Client { clientSocket.RemoteEndPoint } is disconnected.");
             }
         }
 
@@ -61,7 +77,7 @@ namespace ReadingRequest.Model
         {
             CurrentRequest = null;
             var requestType = (RequestType)requestData[3];
-            Console.WriteLine("Request Type: " + requestType.ToString());
+            // Console.WriteLine("Request Type: " + requestType.ToString());
             switch (requestType)
             {
                 case RequestType.LoginInformation:
