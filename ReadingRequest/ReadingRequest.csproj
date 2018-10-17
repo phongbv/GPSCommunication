@@ -62,6 +62,7 @@
     <Compile Include="Model\ClientInformation.cs" />
     <Compile Include="Model\GPSLocationPacket.cs" />
     <Compile Include="Model\HeartBeat.cs" />
+    <Compile Include="Model\HttpUtils.cs" />
     <Compile Include="Model\IInformationContent.cs" />
     <Compile Include="Model\LoginPacket.cs" />
     <Compile Include="Model\Model1.Context.cs">

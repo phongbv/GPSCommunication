@@ -8,6 +8,7 @@ namespace ReadingRequest.Model
 {
     public abstract class BaseRequest
     {
+        protected const string URL = "http://112.78.11.14/api";
         protected byte[] _rawData;
         protected byte[] _informationContent;
         protected abstract byte ContentLength { get; }
@@ -49,15 +50,7 @@ namespace ReadingRequest.Model
 
         public virtual void DoProcessRequest()
         {
-            if (clientConnectionInfor != null)
-            {
-                using (var dbContext = new DataContext())
-                {
-                    var device = dbContext.qbit_info.FirstOrDefault(e => e.info_imei == clientConnectionInfor.TerminalId);
-                    device.info_last_online = DateTime.Now;
-                    dbContext.SaveChanges();
-                }
-            }
+            HttpUtils.SendPost(URL, "imei=" + clientConnectionInfor.TerminalId);
         }
     }
 }

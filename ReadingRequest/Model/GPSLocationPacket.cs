@@ -32,19 +32,12 @@ namespace ReadingRequest.Model
         public override void DoProcessRequest()
         {
             base.DoProcessRequest();
-            using (var dbContext = new DataContext())
-            {
-                dbContext.qbit_detail.Add(new qbit_detail()
-                {
-                    detail_imei = clientConnectionInfor.TerminalId,
-                    detail_last = Time,
-                    detail_lat = Latitude.ToString(),
-                    detail_lng = Longitude.ToString(),
-                    detail_time = Time,
-                    detail_speed = Speed.ToString()
-                });
-                dbContext.SaveChanges();
-            }
+            HttpUtils.SendPost(URL, ToFormData());
+        }
+
+        private string ToFormData()
+        {
+            return $"imei={clientConnectionInfor.TerminalId}&lat={Latitude}&lng={Longitude}&speed={Speed}&time={Time}";
         }
     }
 }
