@@ -20,8 +20,8 @@ namespace ConsoleApplication1
 
         private const int BUFFER_SIZE = 128;
         private const int PORT_NUMBER = 24292;
-        private const string SERVER_ADDRESS = "127.0.0.1";
-        //private const string SERVER_ADDRESS = "112.78.11.14";
+       // private const string SERVER_ADDRESS = "127.0.0.1";
+        private const string SERVER_ADDRESS = "112.78.11.14";
 
         static ASCIIEncoding encoding = new ASCIIEncoding();
         private static Dictionary<RequestType, int> requestFile = new Dictionary<RequestType, int>();

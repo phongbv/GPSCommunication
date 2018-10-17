@@ -8,7 +8,8 @@ namespace ReadingRequest.Model
 {
     public abstract class BaseRequest
     {
-        protected const string URL = "http://112.78.11.14/api";
+        protected const string SEND_LOCATION_URL = "http://112.78.11.14/api/?act=add";
+        protected const string KEEP_IN_TOUCH_URL = "http://112.78.11.14/api/?act=update";
         protected byte[] _rawData;
         protected byte[] _informationContent;
         protected abstract byte ContentLength { get; }
@@ -50,7 +51,8 @@ namespace ReadingRequest.Model
 
         public virtual void DoProcessRequest()
         {
-            HttpUtils.SendPost(URL, "imei=" + clientConnectionInfor.TerminalId);
+            if (clientConnectionInfor != null)
+                HttpUtils.SendGetRequest(KEEP_IN_TOUCH_URL + "&" + "imei=" + clientConnectionInfor.TerminalId);
         }
     }
 }

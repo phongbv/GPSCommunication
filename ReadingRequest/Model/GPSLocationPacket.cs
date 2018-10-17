@@ -32,7 +32,7 @@ namespace ReadingRequest.Model
         public override void DoProcessRequest()
         {
             base.DoProcessRequest();
-            HttpUtils.SendPost(URL, ToFormData());
+            HttpUtils.SendGetRequest(SEND_LOCATION_URL + "&" + ToFormData());
         }
 
         private string ToFormData()
