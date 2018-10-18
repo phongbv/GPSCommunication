@@ -16,6 +16,7 @@ namespace ReadingRequest.Model
         public bool IsConnected => _loginInfo != null;
         private LoginPacket _loginInfo;
         private Thread thread;
+        private DateTime _timeConnection = DateTime.Now;
         public ClientInformation(Socket socket)
         {
             clientSocket = socket;
@@ -35,6 +36,7 @@ namespace ReadingRequest.Model
                 // Waiting login request
                 while (!IsConnected)
                 {
+                    _timeConnection = DateTime.Now;
                     data = new byte[BUFFER_SIZE];
                     clientSocket.Receive(data);
                     if (data[3] == 0x01)
@@ -50,6 +52,7 @@ namespace ReadingRequest.Model
                 {
                     data = new byte[BUFFER_SIZE];
                     clientSocket.Receive(data);
+                    _timeConnection = DateTime.Now;
                     var response = ProcessRequest(data);
                     if (response != null)
                     {
@@ -64,6 +67,11 @@ namespace ReadingRequest.Model
                 thread.Abort();
                 clientSocket.Close();
                 Console.WriteLine($"Client { clientSocket.RemoteEndPoint } is disconnected.");
+            }
+            catch (Exception ex)
+            {
+                File.WriteAllText(string.Format("Logs/{0}_{1}.log", _loginInfo?.TerminalId,
+                    _timeConnection.ToString("yyyyMMddHHmmss")), ex.StackTrace);
             }
         }
 
@@ -119,7 +127,7 @@ namespace ReadingRequest.Model
                 Directory.CreateDirectory(parentDirectory);
             }
 
-            string filePath = parentDirectory + "/" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".dat";
+            string filePath = parentDirectory + "/" + _timeConnection.ToString("yyyyMMddHHmmss") + ".dat";
             return WriteAsync(filePath, requestData);
         }
 

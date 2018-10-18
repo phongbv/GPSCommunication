@@ -17,7 +17,7 @@ namespace ReadingRequest.Model
             _informationContent = _rawData.ElementBetween(4, 24);
         }
 
-        public DateTime Time => new DateTime(_informationContent[0] + 2000, _informationContent[1], _informationContent[2], _informationContent[3], _informationContent[4], _informationContent[5]);
+       // public DateTime Time => new DateTime(_informationContent[0] + 2000, _informationContent[1], _informationContent[2], _informationContent[3], _informationContent[4], _informationContent[5]);
 
         public decimal Latitude => _informationContent.ElementBetween(7, 10).ToDecimal() / 1800000;
         public decimal Longitude => _informationContent.ElementBetween(11, 14).ToDecimal() / 1800000;
@@ -37,7 +37,7 @@ namespace ReadingRequest.Model
 
         private string ToFormData()
         {
-            return $"imei={clientConnectionInfor.TerminalId}&lat={Latitude}&lng={Longitude}&speed={Speed}&time={Time}";
+            return $"imei={clientConnectionInfor.TerminalId}&lat={Latitude}&lng={Longitude}&speed={Speed}";
         }
     }
 }
